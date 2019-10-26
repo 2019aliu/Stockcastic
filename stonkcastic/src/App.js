@@ -23,8 +23,6 @@ const axios = require("axios")
 var apiKey = "AIzaSyB_Y51vD13VuDeqBpokdcr4XFf9JOtra6A";
 var apiEndpoint = 'https://language.googleapis.com/v1/documents:analyzeSentiment?key=' + apiKey;
 
-var postiveHackgtString = "HackGT is a very fun, enjoyable, and impressive event. I enjoy it a lot."
-
 async function getSentiment(str) {
   var sentiment = -1
   var doc = {
@@ -49,18 +47,21 @@ async function getSentiment(str) {
     })
   return sentiment
 }
+async function getSentimentArr(arr) {
+  var sents = []
+  for (var i = 0; i < arr.length; i++) {
+    sents.push(await getSentiment(arr[i]))
+  }
+  return sents
+}
+
 async function main() {
-  var sentiment = await getSentiment(postiveHackgtString)
-  console.log("the sentiment is ... " + sentiment)
-
-  var sentiment = await getSentiment("This suck I hate this water bottle because its too leaky")
-  console.log("the sentiment is ... " + sentiment)
-
-  var sentiment = await getSentiment("Wow Tesla rose 15% today!!! :-)")
-  console.log("the sentiment is ... " + sentiment)
-
-  var sentiment = await getSentiment(postiveHackgtString)
-  console.log("the sentiment is ... " + sentiment)
+  var strings = []
+  strings.push("This suck I hate this water bottle because its too leaky.")
+  strings.push("Wow Tesla rose 15% today!!! :-)")
+  strings.push("HackGT is a very fun, enjoyable, and impressive event. I enjoy it a lot.")
+  var sents = await getSentimentArr(strings)
+  console.log(sents)
 }
 main()
 export default App;
