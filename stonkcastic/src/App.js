@@ -11,8 +11,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className='container'>
-          <h2>MERN-Stack Todo App</h2>
+        <div className="container">
         </div>
         <Route path="/login" component={LoginPage} />
       </Router>
