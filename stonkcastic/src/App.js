@@ -4,6 +4,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import LoginPage from "./components/login-page.component.js";
+import Users from "./components/user-list.component.js";
 
 class App extends Component {
   render() {
@@ -11,7 +12,8 @@ class App extends Component {
       <Router>
         <div className="container">
         </div>
-        <Route path="/login" component={LoginPage} />
+            <Route path="/login" component={LoginPage} />
+	    <Route path="/users" component={Users} />
       </Router>
     )
   }
