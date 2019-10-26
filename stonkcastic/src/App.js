@@ -1,13 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-import React, {Component} from 'react';
-import {BrowserRouter as Router, Link, Route} from 'react-router-dom';
-
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import LoginPage from './components/login-page.component.js';
+// const Language = require('@google-cloud/language');
 
 class App extends Component {
   render() {
-    return(
+    return (
       <Router>
         <div className='container'>
           <h2>MERN-Stack Todo App</h2>
@@ -16,30 +15,48 @@ class App extends Component {
     )
   }
 }
-var happyString = 'Yay! this is so great!'
-async function do_sentiment() {
-  // Imports the Google Cloud client library
-    const language = require('@google-cloud/language');
+const axios = require("axios")
+var apiKey = "AIzaSyB_Y51vD13VuDeqBpokdcr4XFf9JOtra6A";
+var apiEndpoint = 'https://language.googleapis.com/v1/documents:analyzeSentiment?key=' + apiKey;
 
-        // Instantiates a client
-        const client = new language.LanguageServiceClient();
+var postiveHackgtString = "HackGT is a very fun, enjoyable, and impressive event. I enjoy it a lot."
 
-        // The text to analyze
-        const text = happyString;
+async function getSentiment(str) {
+  var sentiment = -1
+  var doc = {
+    language: 'en-us',
+    type: 'PLAIN_TEXT',
+    content: str
+  };
 
-        const document = {
-          content: text,
-          type: 'PLAIN_TEXT',
-        };
+  var data = {
+    document: doc,
+    encodingType: 'UTF8'
+  };
+  await axios.post(apiEndpoint, data)
+    .then((res) => {
+      console.log(`statusCode: ${res.statusCode}`)
+      console.log(res)
+      sentiment = res.data.documentSentiment.score
+      // console.log("the sentiment is ... " + sentiment)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+  return sentiment
+}
+async function main() {
+  var sentiment = await getSentiment(postiveHackgtString)
+  console.log("the sentiment is ... " + sentiment)
 
-        // Detects the sentiment of the text
-        const [result] = await client.analyzeSentiment({document: document});
-        const sentiment = result.documentSentiment;
+  var sentiment = await getSentiment("This suck I hate this water bottle because its too leaky")
+  console.log("the sentiment is ... " + sentiment)
 
-        console.log(`Text: ${text}`);
-        console.log(`Sentiment score: ${sentiment.score}`);
-        console.log(`Sentiment magnitude: ${sentiment.magnitude}`);
-  }
-  do_sentiment();
+  var sentiment = await getSentiment("Wow Tesla rose 15% today!!! :-)")
+  console.log("the sentiment is ... " + sentiment)
 
-  export default App;
+  var sentiment = await getSentiment(postiveHackgtString)
+  console.log("the sentiment is ... " + sentiment)
+}
+main()
+export default App;
