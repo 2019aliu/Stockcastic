@@ -1,3 +1,20 @@
+// const express = require('express');
+// const app = express();
+// const bodyParser = require('body-parser');
+// const cors = require('cors');
+// const PORT = 4000;
+//
+// app.use(cors());
+// app.use(bodyParser.json());
+//
+// app.listen(PORT, function() {
+//     console.log("Server is running on Port: " + PORT);
+// });
+
+
+
+
+
 // Server-side routing and stuff
 
 //
@@ -10,10 +27,18 @@ const app = express();  // make the express server
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const PORT = 4000;  // define which port he server is listening on
-// Import models
-let User = require('./user.model');
-let Stock = require('./stock.model');
+const StockRoutes = express.Router();
+app.use('/StockRoute', StockRoutes);
+const PORT = 4000;  // define which port the server is listening on
+const Schema = mongoose.Schema;
+let StockSchema = new Schema({
+    stock_name: {type: String},
+    stock_ticker: {type: String},
+    stock_price: {type: Number},
+    stock_sentiment: {type: Number}
+});
+
+let Stock = mongoose.model('Stock', StockSchema);
 
 // Middleware lookin
 app.use(cors());
@@ -24,7 +49,7 @@ app.use(bodyParser.json());
 //
 
 // Connect MongoDB with server
-mongoose.connect('mongodb://127.0.0.1:27017/', { useNewUrlParser: true });
+mongoose.connect('mongodb://127.0.0.1:27017/StockRoute', { useNewUrlParser: true });
 const connection = mongoose.connection;
 
 connection.once('open', function() {
@@ -35,12 +60,9 @@ connection.once('open', function() {
 /* Routing for Stocks */
 //
 
-// Routing
-const StockRoutes = express.Router();
-
 // Get router to get all stocks
 StockRoutes.route('/').get(function (req, res) {
-    Stock.find(function (err, stocks) {
+    Stock.find(function(err, stocks) {
         if (err) {
             console.log(err);
         } else {
@@ -61,8 +83,8 @@ StockRoutes.route('/:id').get(function (req, res) {
 StockRoutes.route('/add').post(function (req, res) {
     let stock = new Stock(req.body);
     stock.save()
-        .then(Stock => {
-            res.status(200).json({'Stock': 'Stock added successfully'});
+        .then(stock => {
+            res.status(200).json({'stock': 'Stock added successfully'});
         })
         .catch(err => {
             res.status(400).send('Adding new stock failed');
@@ -88,9 +110,6 @@ StockRoutes.route('/update/:id').post(function (req, res) {
             });
     });
 });
-
-
-app.use('/StockRoute', StockRoutes);
 
 // Get the server running on the chosen port (4000 is usually open ig)
 app.listen(PORT, function () {

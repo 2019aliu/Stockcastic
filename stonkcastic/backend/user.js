@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const Stock = require('./stock.model');
+// const Stock = require('./Stock');
 
 // the tutorial says to use {type: String}
 // but as long as we don't have anything else
@@ -8,7 +8,7 @@ const Stock = require('./stock.model');
 let User = new Schema({
     user_name: {type: String},
     user_pass: {type: String},
-    user_stocks: {type: [Stock]}
+    user_stocks: {type: [String]}
 });
 
 // doesn't actually do anything lel
