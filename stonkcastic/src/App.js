@@ -10,7 +10,6 @@ class App extends Component {
     return(
       <Router>
         <div className="container">
-          <h2>MERN-Stack Todo App</h2>
         </div>
         <Route path="/login" component={LoginPage} />
       </Router>
