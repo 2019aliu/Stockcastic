@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 const User = props => (
     <tr>
-        <td>{props.username}</td>
-        <td>{props.password}</td>
+        <td>{props.user.username}</td>
+        <td>{props.user.password}</td>
     </tr>
 )
 
 export default class UserList extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = { users: [] };
     }
 
     componentDidMount() {
-        axios.get('https://localhost:3000/users/')
+        axios.get('http://localhost:3001/users/')
             .then(response => {
                 this.setState({ users: response.data });
             })

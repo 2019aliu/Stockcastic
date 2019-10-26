@@ -4,16 +4,16 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import LoginPage from "./components/login-page.component.js";
-import Users from "./components/user-list.component.js";
+import UserList from "./components/user-list.component.js";
 
 class App extends Component {
   render() {
-    return(
+    return (
       <Router>
         <div className="container">
         </div>
-            <Route path="/login" component={LoginPage} />
-	    <Route path="/users" component={Users} />
+        <Route path="/login" component={LoginPage} />
+        <Route path="/users" component={UserList} />
       </Router>
     )
   }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import https from 'https';
 
 export default class LoginPage extends Component {
 
@@ -41,7 +40,7 @@ export default class LoginPage extends Component {
             password: this.state.password,
         }
 
-        axios.post('https://localhost:3000/users/add', newUser)
+        axios.post('http://localhost:3001/users/add', newUser)
             .then(res => console.log(res.data))
             .catch(error => {
                 console.log(error.response)
