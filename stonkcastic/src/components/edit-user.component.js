@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-export default class LoginPage extends Component {
-
+export default class EditTodo extends Component {
     constructor(props) {
         super(props);
 
@@ -12,8 +11,21 @@ export default class LoginPage extends Component {
 
         this.state = {
             username: '',
-            password: '',
+            password: ''
         }
+    }
+
+    componentDidMount() {
+        axios.get('http://localhost:8000/users/' + this.props.match.params.id)
+            .then(response => {
+                this.setState({
+                    username: response.data.username,
+                    password: response.data.password
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
     }
 
     onChangeUsername(e) {
@@ -30,32 +42,21 @@ export default class LoginPage extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-
-        console.log('Form submitted:');
-        console.log('Username: ${this.state.username}');
-        console.log('Password: ${this.state.password}');
-
-        const newUser = {
+        const user = {
             username: this.state.username,
-            password: this.state.password,
+            password: this.state.password
         }
-
-        axios.post('http://localhost:8000/users/add', newUser)
+        console.log(user);
+        axios.post('http://localhost:8000/users/update/' + this.props.match.params.id, user)
             .then(res => console.log(res.data))
-            .catch(error => {
-                console.log(error.response)
-            });
-
-        this.setState({
-            username: '',
-            password: '',
-        })
+        
+        this.props.history.push('/');
     }
 
     render() {
         return (
-            <div style={{ marginTop: 10 }}>
-                <h3>Login Page</h3>
+            <div>
+                <h3 align="center">Update User</h3>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Username: </label>
@@ -75,8 +76,10 @@ export default class LoginPage extends Component {
                         />
                     </div>
 
+                    <br></br>
+
                     <div className="form-group">
-                        <input type="submit" value="Submit" className="btn btn-primary" />
+                        <input type="submit" value="Update User" className="btn btn-primary" />
                     </div>
                 </form>
             </div>

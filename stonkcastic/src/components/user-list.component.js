@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import axios from 'axios';
 
 const User = props => (
     <tr>
         <td>{props.user.username}</td>
         <td>{props.user.password}</td>
+        <td>
+            <Link to={"/edit/"+props.user._id}>Edit</Link>
+        </td>            
     </tr>
 )
 
@@ -16,7 +20,7 @@ export default class UserList extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://localhost:3001/users/')
+        axios.get('http://localhost:8000/users/')
             .then(response => {
                 this.setState({ users: response.data });
             })
