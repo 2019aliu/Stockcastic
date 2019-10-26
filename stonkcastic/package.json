@@ -9,15 +9,23 @@
     "bootstrap": "^4.3.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+<<<<<<< HEAD
     "https": "^1.0.0",
+=======
+    "google-auth-library": "^5.5.1",
+    "http": "0.0.0",
+>>>>>>> 23077531a72b43779975d2986bfb83a99f2c3ebb
     "jquery": "^3.4.1",
     "mongoose": "^5.7.7",
+    "open": "^7.0.0",
     "popper.js": "^1.16.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
-    "typescript": "^3.6.4"
+    "server-destroy": "^1.0.1",
+    "typescript": "^3.6.4",
+    "url": "^0.11.0"
   },
   "scripts": {
     "start": "react-scripts start",
