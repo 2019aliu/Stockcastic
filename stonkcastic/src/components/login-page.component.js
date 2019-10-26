@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 export default class LoginPage extends Component {
 
@@ -29,6 +30,18 @@ export default class LoginPage extends Component {
 
     onSubmit(e) {
         e.preventDefault();
+
+        console.log('Form submitted:');
+        console.log('Username: ${this.state.username}');
+        console.log('Password: ${this.state.password}');
+
+        const newUser = {
+            username: this.state.username,
+            password: this.state.password,
+        }
+
+        axios.post('http://localhost:4000/users/add', newUser)
+            .then(res => console.log(res.data));
 
         this.setState({
             username: '',
