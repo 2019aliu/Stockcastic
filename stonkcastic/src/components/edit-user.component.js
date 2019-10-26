@@ -11,7 +11,8 @@ export default class EditTodo extends Component {
 
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            remove: false
         }
     }
 
@@ -40,16 +41,26 @@ export default class EditTodo extends Component {
         })
     }
 
+    onRemoveUser(e) {
+        this.setState({
+            remove: true
+        })
+    }
+
     onSubmit(e) {
         e.preventDefault();
-        const user = {
-            username: this.state.username,
-            password: this.state.password
+        if (this.state.remove) {
+            // Insert remove function here
+        } else {
+            const user = {
+                username: this.state.username,
+                password: this.state.password
+            }
+            console.log(user);
+            axios.post('http://localhost:8000/users/update/' + this.props.match.params.id, user)
+                .then(res => console.log(res.data))
         }
-        console.log(user);
-        axios.post('http://localhost:8000/users/update/' + this.props.match.params.id, user)
-            .then(res => console.log(res.data))
-        
+
         this.props.history.push('/');
     }
 
@@ -74,6 +85,19 @@ export default class EditTodo extends Component {
                             value={this.state.password}
                             onChange={this.onChangePassword}
                         />
+                    </div>
+                    <div className="form-check">
+                        <input className="form-check-input"
+                            id="deleteCheckbox"
+                            type="checkbox"
+                            name="removeCheckbox"
+                            onChange={this.onRemoveItem}
+                            checked={this.state.remove}
+                            value={this.state.remove}
+                        />
+                        <label classNanme="form-check-label" htmlFor="removeCheckbox">
+                            Remove
+                        </label>
                     </div>
 
                     <br></br>
