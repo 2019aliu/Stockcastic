@@ -213,24 +213,72 @@ async function analyze_stock(stock) {
     return (s1 + s2 + 8 * s3) / 10.0
 }
 
+async function get_stock_risk(stock_id) {
+    var risk = -1
+    var stability = -1
+    await axios.get("https://www.blackrock.com/tools/hackathon/performance?identifiers=" + stock_id + "&query=" + stock_id)
+        .then((res) => {
+            // res = JSON.stringify(res)
+            // console.log(res)
+            // res = res.substring(res.indexOf("oneYearRisk"))
+            // res = res.substring(0, res.indexOf(",")).trim();
+            // console.log(res)
+            // output = parseFloat(res);
+            const getCircularReplacer = () => {
+                const seen = new WeakSet();
+                return (key, value) => {
+                    if (typeof value === "object" && value !== null) {
+                        if (seen.has(value)) {
+                            return;
+                        }
+                        seen.add(value);
+                    }
+                    return value;
+                };
+            };
+
+            res = JSON.stringify(res, getCircularReplacer());
+            orig = (' ' + res).slice(1);
+            res = res.substring(res.indexOf("oneYearRisk") + 13)
+            res = res.substring(0, res.indexOf(",")).trim();
+            risk = parseFloat(res);
+
+            orig = orig.substring(orig.indexOf("eightYearRisk") + 15)
+            orig = orig.substring(0, orig.indexOf(",")).trim();
+            var eightyr = parseFloat(orig)
+            stability = eightyr - risk;
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+    return [risk, stability]
+}
+
 async function main() {
     /*
     Ibio is bad
     Macys
     CMG Chipotle
     */
-    var badStocks = ["Macy's M Stock", "NKTR Stock", "ABMD Stock", "KHC Stock", "TPR Stock"]
-    var goodStocks = ["MKTX Stock", "TSN Stock", "BLL Stock", "AMD Stock"]
-    console.log("bad stocks:")
-    for (var i = 0; i < badStocks.length; i++) {
-        var s = await analyze_stock(badStocks[i])
-        console.log(`output for ${badStocks[i]} is ${s}`)
-    }
-    console.log("\n\n\n")
-    console.log("good stocks")
-    for (var i = 0; i < goodStocks.length; i++) {
-        var s = await analyze_stock(goodStocks[i])
-        console.log(`output for ${goodStocks[i]} is ${s}`)
+    // var badStocks = ["Macy's M Stock", "NKTR Stock", "ABMD Stock", "KHC Stock", "TPR Stock"]
+    // var goodStocks = ["MKTX Stock", "TSN Stock", "BLL Stock", "AMD Stock"]
+    // console.log("bad stocks:")
+    // for (var i = 0; i < badStocks.length; i++) {
+    //     var s = await analyze_stock(badStocks[i])
+    //     console.log(`output for ${badStocks[i]} is ${s}`)
+    // }
+    // console.log("\n\n\n")
+    // console.log("good stocks")
+    // for (var i = 0; i < goodStocks.length; i++) {
+    //     var s = await analyze_stock(goodStocks[i])
+    //     console.log(`output for ${goodStocks[i]} is ${s}`)
+    // }
+    stocks = ["AAPL", "TSLA", "M", "UNP"]
+    for (var i = 0; i < stocks.length; i++) {
+        var out = await get_stock_risk(stocks[i])
+        var risk = out[0]
+        var stability = out[1]
+        console.log(stocks[i] + " - risk: " + risk + " stability: " + stability)
     }
 }
 main()
