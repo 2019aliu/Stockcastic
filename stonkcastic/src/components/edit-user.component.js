@@ -102,6 +102,33 @@ export default class EditTodo extends Component {
     render() {
         return (
             <div>
+                <header class="masthead mb-auto navbar navbar-expand-sm justify-content-center">
+                    <div class="inner">
+                        <nav class="nav nav-masthead navbar-fixed-top bg-dark">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <h3 id="masthead-brand">Stockastic</h3>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="/home">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/registration">Registration</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/login">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/users">Profile</a>
+                                </li>
+                            </ul>
+                            {/* <a class="nav-link active" href="/home">Home</a>
+                            <a class="nav-link" href="/registration">Registration</a>
+                            <a class="nav-link" href="/login">Login</a>
+                            <a class="nav-link" href="/edit">Profile</a> */}
+                        </nav>
+                    </div>
+                </header>
                 <h3 align="center">Update User</h3>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">

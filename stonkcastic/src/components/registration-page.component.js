@@ -70,7 +70,34 @@ export default class RegistrationPage extends Component {
     render() {
         return (
             <div style={{ marginTop: 10 }}>
-                <h3>Registration Page</h3>
+                <header class="masthead mb-auto navbar navbar-expand-sm justify-content-center">
+                    <div class="inner">
+                        <nav class="nav nav-masthead navbar-fixed-top bg-dark">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <h3 id="masthead-brand">Stockastic</h3>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="/home">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/registration">Registration</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/login">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/users">Profile</a>
+                                </li>
+                            </ul>
+                            {/* <a class="nav-link active" href="/home">Home</a>
+                            <a class="nav-link" href="/registration">Registration</a>
+                            <a class="nav-link" href="/login">Login</a>
+                            <a class="nav-link" href="/edit">Profile</a> */}
+                        </nav>
+                    </div>
+                </header>
+                <h1>Registration</h1>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label>Username: </label>
