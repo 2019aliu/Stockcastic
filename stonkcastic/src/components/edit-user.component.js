@@ -7,13 +7,16 @@ export default class EditTodo extends Component {
 
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
+        this.onChangeStocks = this.onChangeStocks.bind(this);
+        this.onChangeNewStock = this.onChangeNewStock.bind(this);
         this.onRemoveUser = this.onRemoveUser.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
             username: '',
             password: '',
-            Stock: '',
+            newStock: '',
+            stocks: [],
             remove: false
         }
     }
@@ -24,7 +27,8 @@ export default class EditTodo extends Component {
                 this.setState({
                     username: response.data.username,
                     password: response.data.password,
-
+                    newStock: '',
+                    stocks: response.data.stocks,
                 })
             })
             .catch(function (error) {
@@ -33,6 +37,7 @@ export default class EditTodo extends Component {
     }
 
     onChangeUsername(e) {
+        console.log(this.state.username);
         this.setState({
             username: e.target.value
         })
@@ -44,9 +49,15 @@ export default class EditTodo extends Component {
         })
     }
 
-    onChangeStock(e) {
+    onChangeStocks(e) {
         this.setState({
-            stock: e.target.value
+            stocks: e.target.value
+        })
+    }
+
+    onChangeNewStock(e) {
+        this.setState({
+            newStock: e.target.value
         })
     }
 
@@ -59,20 +70,26 @@ export default class EditTodo extends Component {
     onSubmit(e) {
         e.preventDefault();
         if (this.state.remove) {
-            const newUser = {
+            const user = {
                 username: this.state.username,
                 password: this.state.password,
+                stocks: this.state.stocks
             }
-            axios.post('http://localhost:8000/users/remove/' + this.props.match.params.id, newUser)
+            axios.post('http://localhost:8000/users/remove/' + this.props.match.params.id, user)
                 .then(res => console.log(res.data))
                 .catch(error => {
                     console.log(error.response)
                 });
 
         } else {
+            this.state.stocks.push(this.state.newStock);
+            // let tempArray = this.state.stocks;
+            // tempArray.push(this.state.newStock);
             const user = {
                 username: this.state.username,
-                password: this.state.password
+                password: this.state.password,
+                stocks: this.state.stocks
+                // stocks: tempArray
             }
             console.log(user);
             axios.post('http://localhost:8000/users/update/' + this.props.match.params.id, user)
@@ -104,7 +121,19 @@ export default class EditTodo extends Component {
                             onChange={this.onChangePassword}
                         />
                     </div>
+                    <div className="form-group">
+                        <label>Stocks: </label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={this.state.newStock}
+                            onChange={this.onChangeNewStock}
+                        />
+                    </div>
                     <div className="form-check">
+                        <label className="form-check-label" htmlFor="removeCheckbox">
+                            Remove
+                        </label>
                         <input className="form-check-input"
                             id="deleteCheckbox"
                             type="checkbox"
@@ -113,10 +142,8 @@ export default class EditTodo extends Component {
                             checked={this.state.remove}
                             value={this.state.remove}
                         />
-                        <label className="form-check-label" htmlFor="removeCheckbox">
-                            Remove
-                        </label>
                     </div>
+                    <br></br>
                     <div className="form-group">
                         <input type="submit" value="Update User" className="btn btn-primary" />
                     </div>

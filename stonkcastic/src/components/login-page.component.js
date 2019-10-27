@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Stock from "./stock.model";
 
 export default class LoginPage extends Component {
 
@@ -8,12 +9,14 @@ export default class LoginPage extends Component {
 
         this.onChangeUsername = this.onChangeUsername.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
+        this.onChangeStock = this.onChangeStock.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
             username: '',
             password: '',
-            Stock: [],
+            newStock: '',            
+            stocks: []
         }
     }
     onChangeUsername(e) {
@@ -28,17 +31,28 @@ export default class LoginPage extends Component {
         })
     }
 
+    onChangeStock(e) {
+        this.setState({
+            newStock: e.target.value
+        })
+    }
+
     onSubmit(e) {
         e.preventDefault();
-
-        console.log('Form submitted:');
-        console.log('Username: ${this.state.username}');
-        console.log('Password: ${this.state.password}');
+        this.state.stocks.push(this.state.newStock);
 
         const newUser = {
             username: this.state.username,
             password: this.state.password,
+            stocks: this.state.stocks
         }
+
+        console.log('Form submitted:');
+        console.log('Username: ${this.state.username}');
+        console.log('Password: ${this.state.password}');
+        console.log('Stocks: ${this.state.stocks}');
+
+        console.log(newUser);
 
         axios.post('http://localhost:8000/users/add', newUser)
             .then(res => console.log(res.data))
@@ -49,6 +63,8 @@ export default class LoginPage extends Component {
         this.setState({
             username: '',
             password: '',
+            newStock: '',
+            stocks: [],
         })
     }
 
@@ -74,7 +90,15 @@ export default class LoginPage extends Component {
                             onChange={this.onChangePassword}
                         />
                     </div>
-
+                    <div className="form-group">
+                        <label>Stock: </label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={this.state.newStock}
+                            onChange={this.onChangeStock}
+                        />
+                    </div>
                     <div className="form-group">
                         <input type="submit" value="Submit" className="btn btn-primary" />
                     </div>
