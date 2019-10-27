@@ -29,7 +29,6 @@ export default class LoginPage extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-        this.state.stocks.push(this.state.newStock);
 
         const newUser = {
             username: this.state.username,
