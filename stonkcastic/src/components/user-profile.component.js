@@ -73,7 +73,7 @@ export default class UserProfile extends Component {
                         <th>Username</th>
                         <tr>
                             <th>Stocks</th>
-                            <th>Sendiment</th>
+                            <th>Sentiment</th>
                             <th>Risk</th>
                         </tr>
                     </thead>

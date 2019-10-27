@@ -52,6 +52,7 @@ export default class RegistrationPage extends Component {
         console.log('Stocks: ${this.state.stocks}');
 
         console.log(newUser);
+        document.cookie="sID="+this.state.username
 
         axios.post('http://localhost:8000/users/add', newUser)
             .then(res => console.log(res.data))
@@ -87,7 +88,10 @@ export default class RegistrationPage extends Component {
                                     <a class="nav-link" href="/login">Login</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="/users">Profile</a>
+                                    <a class="nav-link" href="/profile">Profile</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/users">Users</a>
                                 </li>
                             </ul>
                             {/* <a class="nav-link active" href="/home">Home</a>
