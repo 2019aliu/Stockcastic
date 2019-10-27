@@ -13,9 +13,9 @@ export default class LoginPage extends Component {
         this.state = {
             username: '',
             password: '',
+            Stock: [],
         }
     }
-
     onChangeUsername(e) {
         this.setState({
             username: e.target.value

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Stock = require('./stock.model');
 const Schema = mongoose.Schema;
 
 let User = new Schema({
@@ -7,6 +8,9 @@ let User = new Schema({
     },
     password: {
         type: String
+    },
+    stock: {
+        type: Stock.schema
     }
 });
 

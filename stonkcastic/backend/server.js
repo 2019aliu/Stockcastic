@@ -54,6 +54,36 @@ userRoutes.route('/add').post(function (req, res) {
         });
 });
 
+userRoutes.route('/addStock').post(function (req, res) {
+    User.findById(req.params.id, function (err, user) {
+        if (!user)
+            res.status(404).send("data is not found");
+        else
+            user.stock = req.body.stock;
+
+        user.save().then(user => {
+            res.json('User Stock added!');
+        })
+            .catch(err => {
+                res.status(400).send("Stock addition not possible");
+            })
+    });
+});
+
+userRoutes.route('/remove/:id').post(function (req, res) {
+    User.findById(req.params.id, function (err, user) {
+        if (!user)
+            res.status(404).send("data is not found");
+        else
+            user.remove().then(user => {
+                res.json('User removed!');
+            })
+                .catch(err => {
+                    res.status(400).send("Remove not possible");
+                });
+    });
+});
+
 userRoutes.route('/update/:id').post(function (req, res) {
     User.findById(req.params.id, function (err, user) {
         if (!user)

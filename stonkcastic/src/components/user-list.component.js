@@ -7,8 +7,8 @@ const User = props => (
         <td>{props.user.username}</td>
         <td>{props.user.password}</td>
         <td>
-            <Link to={"/edit/"+props.user._id}>Edit</Link>
-        </td>            
+            <Link to={"/edit/" + props.user._id}>Edit</Link>
+        </td>
     </tr>
 )
 
@@ -30,16 +30,17 @@ export default class UserList extends Component {
     }
 
     userList() {
-        return this.state.users.map(function(currentUser, i) {
+        console.log(this.state.users[6]);
+        return this.state.users.map(function (currentUser, i) {
             return <User user={currentUser} key={i} />;
         })
     }
 
     render() {
-        return(
+        return (
             <div>
                 <h3>Users List</h3>
-                <table className="table table-striped" style={{ marginTop: 20}}>
+                <table className="table table-striped" style={{ marginTop: 20 }}>
                     <thead>
                         <tr>
                             <th>Username</th>
@@ -47,8 +48,8 @@ export default class UserList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { this.userList() }
-                    </tbody>                    
+                        {this.userList()}
+                    </tbody>
                 </table>
             </div>
         )
