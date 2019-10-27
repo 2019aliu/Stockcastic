@@ -9,8 +9,8 @@ let User = new Schema({
     password: {
         type: String
     },
-    stock: {
-        type: Stock.schema
+    stocks: {
+        type: [String]
     }
 });
 

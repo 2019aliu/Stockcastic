@@ -45,29 +45,14 @@ userRoutes.route('/:id').get(function (req, res) {
 
 userRoutes.route('/add').post(function (req, res) {
     let user = new User(req.body);
+    user.markModified("stocks")
     user.save()
-        .then(todo => {
-            res.status(200).json({ 'user': 'user added successfully' });
+        .then(user => {
+            res.status(200).json({ 'reqBody': req.body, "user": 'user added successfully' });
         })
         .catch(err => {
             res.status(400).send('adding new user failed');
         });
-});
-
-userRoutes.route('/addStock').post(function (req, res) {
-    User.findById(req.params.id, function (err, user) {
-        if (!user)
-            res.status(404).send("data is not found");
-        else
-            user.stock = req.body.stock;
-
-        user.save().then(user => {
-            res.json('User Stock added!');
-        })
-            .catch(err => {
-                res.status(400).send("Stock addition not possible");
-            })
-    });
 });
 
 userRoutes.route('/remove/:id').post(function (req, res) {
@@ -88,10 +73,11 @@ userRoutes.route('/update/:id').post(function (req, res) {
     User.findById(req.params.id, function (err, user) {
         if (!user)
             res.status(404).send("data is not found");
-        else
+        else {
             user.username = req.body.username;
-        user.password = req.body.password;
-
+            user.password = req.body.password;
+            user.stocks = req.body.stocks;
+        }
         user.save().then(user => {
             res.json('User updated!');
         })
@@ -273,12 +259,47 @@ async function main() {
     //     var s = await analyze_stock(goodStocks[i])
     //     console.log(`output for ${goodStocks[i]} is ${s}`)
     // }
-    stocks = ["AAPL", "TSLA", "M", "UNP"]
-    for (var i = 0; i < stocks.length; i++) {
-        var out = await get_stock_risk(stocks[i])
-        var risk = out[0]
-        var stability = out[1]
-        console.log(stocks[i] + " - risk: " + risk + " stability: " + stability)
-    }
+    // stocks = ["AAPL", "TSLA", "M", "UNP"]
+    // for (var i = 0; i < stocks.length; i++) {
+    //     var out = await get_stock_risk(stocks[i])
+    //     var risk = out[0]
+    //     var stability = out[1]
+    //     console.log(stocks[i] + " - risk: " + risk + " stability: " + stability)
+    // }
 }
-main()
+// main()
+// const apiRoutes = express.Router();
+// app.use("/api", apiRoutes)
+
+// async function api_callback(req, res) {
+//     // var stock_id = req.params.id
+//     // var sent = await analyze_stock(stock_id)
+//     // var out = await get_stock_risk(stocks[i])
+//     // var risk = out[0]
+//     // res.json({
+//     //     s: sent,
+//     //     r: risk
+//     // })
+//     res.json("Hi! from the API")
+// }
+// apiRoutes.route('/call').post(api_callback);
+
+userRoutes.route('/gen/:id').get(function (req, res) {
+    let id = req.params.id;
+    User.findById(id, async function (err, user) {
+        var output = []
+        for (var i = 0; i < user.stocks.length; i++) {
+            var stock_id = user.stocks[i]
+            var sent = await analyze_stock(stock_id)
+            var out = await get_stock_risk(stock_id)
+            var risk = out[0]
+
+            output.push({
+                id: user.stocks[i],
+                s: sent,
+                r: risk
+            })
+        }
+        res.json(output);
+    });
+});

@@ -24,5 +24,10 @@ class App extends Component {
     )
   }
 }
+// const axios = require("axios")
+// axios.get("http://localhost:8000/api?id=TSLA")
+//   .then((res) => {
+//     console.log(res)
+//   })
 
 export default App;

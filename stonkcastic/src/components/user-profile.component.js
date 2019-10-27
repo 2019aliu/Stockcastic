@@ -4,8 +4,8 @@ import axios from 'axios';
 const Stock = props => (
     <tr>
         <td>{props.stock}</td>
-        <td>Input Sentiment</td>
-        <td>Input Data</td>
+        <td>{props.sentiment}</td>
+        <td>{props.risk}</td>
     </tr>
 )
 
@@ -13,15 +13,17 @@ export default class UserProfile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {      
-            stocks: []
+        this.state = {
+            stocks: [Object]
         }
     }
 
     componentDidMount() {
-        axios.get('http://localhost:8000/users/' + this.props.match.params.id)
+        axios.get('http://localhost:8000/users/gen/' + this.props.match.params.id)
             .then(response => {
-                this.setState({ stocks: response.data.stocks });
+                console.log("testing")
+                console.log("stocks: " + response.data)
+                this.setState({ stocks: response.data });
             })
             .catch(function (error) {
                 console.log(error);
@@ -30,8 +32,8 @@ export default class UserProfile extends Component {
 
     stocksList() {
         console.log(this.state.stocks);
-        return this.state.stocks.map(function (currentStock, i) {
-            return <Stock stock={currentStock} key={i} />;
+        return this.state.stocks.map(function (cur, i) {
+            return <Stock stock={cur.id} sentiment={cur.s} risk={cur.r} key={i} />;
         })
     }
 
