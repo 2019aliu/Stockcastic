@@ -59,6 +59,9 @@ export default class UserProfile extends Component {
                                 <li class="nav-item">
                                     <a class="nav-link" href="/users">Profile</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/users">Users</a>
+                                </li>
                             </ul>
                             {/* <a class="nav-link active" href="/home">Home</a>
                             <a class="nav-link" href="/registration">Registration</a>
